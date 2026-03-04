@@ -34,4 +34,19 @@ function comprobarHorario() {
 
     setInterval(comprobarHorario, 10000);
 
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-links ul');
 
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            // Activa/desactiva el menú
+            navMenu.classList.toggle('active');
+            
+            // Cambia el icono de barras por una X
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+    }
+});

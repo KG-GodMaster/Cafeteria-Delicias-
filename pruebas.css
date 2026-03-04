@@ -1050,6 +1050,15 @@ body {
     color: #3e2b1f;
 }
 
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-primario);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
 /* --- INYECCIÓN DE RESPONSIVE - JOHNNY'S SPECIAL --- */
 
 /* 1. Ajustes Globales de Flexibilidad */
@@ -1060,20 +1069,48 @@ img {
 
 /* 2. Header: De paseo por Corpo Plaza a callejón de Night City */
 @media (max-width: 992px) {
-    .main-header {
-        flex-direction: column;
-        padding: 15px 2%;
-        gap: 15px;
-    }
-    
-    .nav-links ul {
-        gap: 15px;
+    /* Mostramos el botón de hamburguesa */
+    .menu-toggle {
+        display: block;
     }
 
-    .header-actions {
-        font-size: 0.8rem;
-        gap: 10px;
+    /* Transformamos la lista en un menú vertical oculto */
+    .nav-links ul {
+        display: none; /* Lo escondemos por defecto */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Justo debajo del header */
+        left: 0;
+        width: 100%;
+        background-color: var(--color-fondo-header);
+        padding: 20px 0;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        gap: 15px; /* Espacio entre enlaces */
     }
+
+    /* Clase que inyectaremos con JS para mostrar el menú */
+    .nav-links ul.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Ajustamos el header para que no explote */
+    .main-header {
+        justify-content: space-between;
+        padding: 10px 5%;
+    }
+
+    /* Escondemos las acciones de teléfono/social en móviles muy pequeños si molestan */
+    .header-actions {
+        display: none; 
+    }
+
+    
 }
 
 /* 3. Hero (#inicio): Que no se coma el texto */
@@ -1100,28 +1137,6 @@ img {
     }
 }
 
-/* 4. El Grid de Tostadas (Tu obsesión) */
-@media (max-width: 768px) {
-    .grid-menu-tostadas {
-        /* En móvil, una sola columna. Nada de espacios blancos raros en el medio */
-        grid-template-columns: 1fr; 
-        gap: 30px;
-    }
-
-    .cabecera-tostadas h2 {
-        font-size: 1.6rem;
-    }
-
-    .cabecera-tostadas .linea-decorativa {
-        display: none; /* Quitamos basura visual en pantallas pequeñas */
-    }
-    
-    /* Centramos el texto para que no parezca que se cae de lado */
-    .lista-tostadas {
-        text-align: center;
-    }
-}
-
 /* 5. Contacto y Secciones de Grid */
 @media (max-width: 850px) {
     .contenedor-principal-contacto, 
@@ -1135,9 +1150,9 @@ img {
         grid-template-columns: 1fr;
     }
 
-    .mapa-zona, .mapa-zona2 {
+    .mapa-zona {
+        min-width: 100% !important; 
         min-height: 300px;
-        order: -1; /* El mapa arriba para que sepan a dónde ir antes de ver el email */
     }
 }
 
@@ -1153,4 +1168,65 @@ img {
         margin: 0 10px;
     }
 }
+
+/* Para tablets y dispositivos medianos */
+@media (max-width: 992px) {
+    .mapa-zona2 {
+        min-width: 100%; /* El mapa se expande para llenar su contenedor */
+        height: 350px;   /* Reducimos un poco la altura para que no sea un bloque eterno */
+        margin-top: 20px; /* Un poco de aire por arriba */
+    }
+}
+
+/* Para móviles (La prueba de fuego) */
+@media (max-width: 768px) {
+    .mapa-zona2 {
+        min-height: 250px; /* En móviles muy pequeños, menos altura es más manejable */
+        border-radius: 12px; /* Un poco más de estilo para que no parezca un bloque de Arasaka */
+    }
+
+    /* Si el mapa está dentro de un contenedor flex o grid, 
+       aseguramos que ocupe toda la fila */
+    .contenedor-principal-contacto, 
+    .contenedor-principal-contacto2 {
+        display: flex;
+        flex-direction: column; /* Apilamos la info y el mapa */
+    }
+}
+
+
+@media (max-width: 992px) {
+    .contenedor-principal-contacto {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .mapa-zona {
+        min-width: 0 !important; 
+        width: 100% !important;
+        /* Forzamos la altura para que no desaparezca */
+        height: 350px !important;
+        min-height: 350px !important;
+        /* Eliminamos cualquier margen lateral que esté empujando */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 20px;
+        /* Aseguramos que el iframe interno también obedezca */
+        flex: none !important; 
+    }
+}
+
+/* Ajuste extra para la versión de contacto2 si también falla */
+@media (max-width: 992px) {
+    .contenedor-principal-contacto2 {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .mapa-zona2 {
+        min-width: 0 !important;
+        width: 100% !important;
+        height: 350px !important;
+    }
+}
+
 
